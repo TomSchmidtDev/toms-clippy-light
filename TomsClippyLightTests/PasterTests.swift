@@ -72,21 +72,9 @@ struct PasterTests {
         #expect(ws.activatedBundleIDs == ["com.test.prev"])
     }
 
-    @Test("When accessibility not trusted, paste requests trust instead of posting")
-    func requestsTrustWhenNotGranted() async {
+    @Test("Paste always posts Cmd+V; caller is responsible for checking accessibility trust")
+    func alwaysPostsCommandV() async {
         let (paster, _, _, kb) = makePaster()
-        kb.isAccessibilityTrusted = false
-        paster.captureFocus()
-        paster.paste(ClipboardEntry(content: .text("x")))
-        try? await Task.sleep(nanoseconds: 200_000_000)
-        #expect(kb.postCommandVCount == 0)
-        #expect(kb.trustRequestCount == 1)
-    }
-
-    @Test("When accessibility trusted, paste posts Cmd+V")
-    func postsCommandVWhenTrusted() async {
-        let (paster, _, _, kb) = makePaster()
-        kb.isAccessibilityTrusted = true
         paster.captureFocus()
         paster.paste(ClipboardEntry(content: .text("x")))
         try? await Task.sleep(nanoseconds: 200_000_000)

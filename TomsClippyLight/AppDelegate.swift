@@ -1,4 +1,5 @@
 import AppKit
+import ApplicationServices
 import KeyboardShortcuts
 import SwiftUI
 
@@ -110,15 +111,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleEntrySelection(_ entry: ClipboardEntry) {
         popover.performClose(nil)
+        guard AXIsProcessTrusted() else {
+            openSettings()
+            return
+        }
         paster.paste(entry)
     }
 
     private func openSettings() {
-        NSApp.activate(ignoringOtherApps: true)
-        if #available(macOS 14, *) {
+        DispatchQueue.main.async {
+            NSApp.activate(ignoringOtherApps: true)
             NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-        } else {
-            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
         }
     }
 

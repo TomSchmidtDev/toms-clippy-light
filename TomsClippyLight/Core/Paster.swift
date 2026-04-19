@@ -42,11 +42,7 @@ public final class Paster {
 
         Task { @MainActor [keyboard] in
             try? await Task.sleep(nanoseconds: 80_000_000)
-            if keyboard.isAccessibilityTrusted {
-                keyboard.postCommandV()
-            } else {
-                _ = keyboard.requestAccessibilityTrust()
-            }
+            keyboard.postCommandV()
         }
     }
 
