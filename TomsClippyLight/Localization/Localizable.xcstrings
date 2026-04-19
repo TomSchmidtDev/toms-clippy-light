@@ -1,0 +1,217 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "menu.settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings…" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einstellungen…" } }
+      }
+    },
+    "menu.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No history yet" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Einträge" } }
+      }
+    },
+    "menu.clear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clear History" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Historie löschen" } }
+      }
+    },
+    "menu.quit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Quit" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Beenden" } }
+      }
+    },
+    "entry.image" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Image" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bild" } }
+      }
+    },
+    "entry.files" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Files" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dateien" } }
+      }
+    },
+    "entry.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "(empty)" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "(leer)" } }
+      }
+    },
+    "settings.tab.general" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "General" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Allgemein" } }
+      }
+    },
+    "settings.tab.shortcut" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Shortcut" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tastenkürzel" } }
+      }
+    },
+    "settings.tab.about" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "About" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } }
+      }
+    },
+    "settings.launchAtLogin" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Launch at login" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Beim Anmelden starten" } }
+      }
+    },
+    "settings.language" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Language" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sprache" } }
+      }
+    },
+    "settings.language.auto" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Automatic (System)" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Automatisch (System)" } }
+      }
+    },
+    "settings.language.english" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "English" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Englisch" } }
+      }
+    },
+    "settings.language.german" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "German" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deutsch" } }
+      }
+    },
+    "settings.historySize" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "History size" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Größe der Historie" } }
+      }
+    },
+    "settings.persistHistory" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Persist history between restarts" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Historie über Neustarts hinweg behalten" } }
+      }
+    },
+    "settings.ignorePasswords" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ignore passwords (1Password, Safari AutoFill, …)" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Passwörter ignorieren (1Password, Safari AutoFill, …)" } }
+      }
+    },
+    "settings.shortcut.label" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Show history:" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Historie öffnen:" } }
+      }
+    },
+    "settings.accessibility.title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Accessibility permission" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bedienungshilfen-Berechtigung" } }
+      }
+    },
+    "settings.accessibility.ok" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Granted — auto-paste is ready." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erteilt — Auto-Einfügen ist bereit." } }
+      }
+    },
+    "settings.accessibility.missing" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not granted — auto-paste is disabled until permission is given in System Settings → Privacy & Security → Accessibility." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht erteilt — Auto-Einfügen ist deaktiviert, bis die Berechtigung unter Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen erteilt wird." } }
+      }
+    },
+    "settings.accessibility.open" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open System Settings" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Systemeinstellungen öffnen" } }
+      }
+    },
+    "settings.language.restartHint" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Language change takes effect after the next app restart." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Sprachänderung wird erst nach dem nächsten App-Neustart wirksam." } }
+      }
+    },
+    "about.version" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Version" } }
+      }
+    },
+    "about.github" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "GitHub Repository" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "GitHub-Repository" } }
+      }
+    },
+    "about.unquarantine" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "If macOS refuses to open the app, run:\n`xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app`" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Falls macOS die App nicht öffnet, führe aus:\n`xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app`" } }
+      }
+    },
+    "popover.search" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search history…" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Historie durchsuchen…" } }
+      }
+    },
+    "popover.section.pinned" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pinned" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Angeheftet" } }
+      }
+    },
+    "popover.section.recent" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recent" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zuletzt" } }
+      }
+    },
+    "popover.empty" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No clipboard history yet.\nCopy something to get started." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Einträge.\nKopiere etwas, um zu starten." } }
+      }
+    },
+    "popover.action.pin" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pin" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anheften" } }
+      }
+    },
+    "popover.action.unpin" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unpin" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lösen" } }
+      }
+    },
+    "popover.action.delete" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Löschen" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Archive
+        run: |
+          xcodebuild archive \
+            -project TomsClippyLight.xcodeproj \
+            -scheme TomsClippyLight \
+            -configuration Release \
+            -archivePath build/TomsClippyLight.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package zip
+        run: |
+          mkdir -p dist
+          cp -R build/TomsClippyLight.xcarchive/Products/Applications/TomsClippyLight.app dist/
+          cd dist && zip -yr TomsClippyLight.zip TomsClippyLight.app
+          shasum -a 256 TomsClippyLight.zip > TomsClippyLight.zip.sha256
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/TomsClippyLight.zip
+            dist/TomsClippyLight.zip.sha256
+          generate_release_notes: true
+          body: |
+            ## Installation (English)
+
+            1. Download `TomsClippyLight.zip` below.
+            2. Unzip and move `TomsClippyLight.app` to `/Applications`.
+            3. Because this app is **not signed**, remove the quarantine flag:
+
+               ```
+               xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app
+               ```
+
+            4. Launch the app. On first paste, grant **Accessibility** permission under System Settings -> Privacy & Security -> Accessibility.
+
+            ## Installation (Deutsch)
+
+            1. `TomsClippyLight.zip` unten herunterladen.
+            2. Entpacken und `TomsClippyLight.app` nach `/Applications` verschieben.
+            3. Die App ist **nicht signiert**, daher Quarantaene-Flag entfernen:
+
+               ```
+               xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app
+               ```
+
+            4. App starten. Beim ersten Einfuegen die **Bedienungshilfen**-Berechtigung in Systemeinstellungen -> Datenschutz & Sicherheit -> Bedienungshilfen erteilen.
