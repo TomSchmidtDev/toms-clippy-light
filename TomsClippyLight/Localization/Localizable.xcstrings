@@ -140,6 +140,20 @@
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht erteilt — Auto-Einfügen ist deaktiviert, bis die Berechtigung unter Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen erteilt wird." } }
       }
     },
+    "settings.accessibility.request" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Request Permission…" } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Berechtigung anfordern…" } }
+      }
+    },
+    "settings.accessibility.rebuildHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Note: each Xcode rebuild creates a new binary — you may need to re-grant after every build." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hinweis: Jeder Xcode-Rebuild erzeugt ein neues Binary — nach jedem Build ggf. erneut erteilen." } }
+      }
+    },
     "settings.accessibility.open" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Open System Settings" } },
@@ -210,6 +224,13 @@
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } },
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Löschen" } }
+      }
+    },
+    "popover.accessibility.hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Auto-paste disabled — grant Accessibility in Settings → Shortcut." } },
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Auto-Paste deaktiviert — Bedienungshilfen in Einstellungen → Shortcut erteilen." } }
       }
     }
   },

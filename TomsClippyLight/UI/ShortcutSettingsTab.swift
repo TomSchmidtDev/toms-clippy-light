@@ -24,9 +24,17 @@ struct ShortcutSettingsTab: View {
                 } else {
                     Text(L10n.settingsAccessibilityMissing)
                         .foregroundStyle(.secondary)
-                    Button(L10n.settingsAccessibilityOpen) {
-                        openAccessibilitySettings()
+                    HStack {
+                        Button(L10n.settingsAccessibilityRequest) {
+                            requestAccessibility()
+                        }
+                        Button(L10n.settingsAccessibilityOpen) {
+                            openAccessibilitySettings()
+                        }
                     }
+                    Text(L10n.settingsAccessibilityRebuildHint)
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
                 }
             }
         }
@@ -47,6 +55,12 @@ struct ShortcutSettingsTab: View {
                 isAccessibilityTrusted = AXIsProcessTrusted()
             }
         }
+    }
+
+    private func requestAccessibility() {
+        let key = "AXTrustedCheckOptionPrompt" as CFString
+        let options = [key: true] as CFDictionary
+        AXIsProcessTrustedWithOptions(options)
     }
 
     private func openAccessibilitySettings() {

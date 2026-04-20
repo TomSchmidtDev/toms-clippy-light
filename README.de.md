@@ -31,7 +31,7 @@ Da die App **nicht signiert** ist (keine Apple Developer ID), setzt macOS sie st
 3. Öffne das Terminal und führe aus:
 
    ```bash
-   xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app
+   xattr -d com.apple.quarantine /Applications/TomsClippyLight.app
    ```
 
    Alternativ das mitgelieferte Hilfs-Script:

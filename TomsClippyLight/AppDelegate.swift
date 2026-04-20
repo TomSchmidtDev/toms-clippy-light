@@ -12,9 +12,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let persistenceStore: PersistenceStore
 
     private var statusItem: NSStatusItem!
-    private var popover: NSPopover!
+    private var historyPanel: NSPanel?
     private var menuBuilder: MenuBuilder!
-    private var eventMonitor: Any?
+    private var clickOutsideMonitor: Any?
+    private var keyMonitor: Any?
+    private var settingsWindowController: NSWindowController?
 
     override init() {
         let persistence = PersistenceStore()
@@ -40,7 +42,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         LanguageBootstrap.applyIfNeeded(preferences.language)
         setupStatusItem()
-        setupPopover()
+        setupHistoryPanel()
         if preferences.persistHistory {
             historyStore.loadFromDisk()
         }
@@ -74,18 +76,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
     }
 
-    private func setupPopover() {
-        popover = NSPopover()
-        popover.behavior = .transient
-        popover.contentSize = NSSize(width: 360, height: 440)
-        popover.contentViewController = NSHostingController(
-            rootView: HistoryPopover(
-                historyStore: historyStore,
-                preferences: preferences,
-                onSelect: { [weak self] entry in self?.handleEntrySelection(entry) },
-                onDismiss: { [weak self] in self?.popover.performClose(nil) }
-            )
+    private func setupHistoryPanel() {
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: 360, height: 440),
+            styleMask: [.borderless, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
         )
+        panel.isFloatingPanel = true
+        panel.level = .popUpMenu
+        panel.isMovable = false
+        panel.collectionBehavior = [.canJoinAllSpaces, .transient]
+        panel.hasShadow = true
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+
+        let view = HistoryPopover(
+            historyStore: historyStore,
+            preferences: preferences,
+            onSelect: { [weak self] entry in self?.handleEntrySelection(entry) },
+            onDismiss: { [weak self] in self?.closeHistoryPanel() },
+            onOpenSettings: { [weak self] in self?.openSettings() }
+        )
+        .background(.windowBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+
+        panel.contentViewController = NSHostingController(rootView: view)
+        historyPanel = panel
     }
 
     @objc private func statusItemClicked(_ sender: NSStatusBarButton) {
@@ -96,45 +113,112 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             statusItem.button?.performClick(nil)
             statusItem.menu = nil
         } else {
-            paster.captureFocus()
-            togglePopover(sender)
+            toggleHistoryPanel()
         }
     }
 
-    private func togglePopover(_ sender: NSStatusBarButton) {
-        if popover.isShown {
-            popover.performClose(sender)
+    private func toggleHistoryPanel() {
+        if historyPanel?.isVisible == true {
+            closeHistoryPanel()
         } else {
-            popover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .minY)
+            showHistoryPanel()
+        }
+    }
+
+    private func showHistoryPanel() {
+        guard let button = statusItem.button,
+              let buttonWindow = button.window,
+              let panel = historyPanel else { return }
+
+        paster.captureFocus()
+
+        let buttonRect = button.convert(button.bounds, to: nil)
+        let screenRect = buttonWindow.convertToScreen(buttonRect)
+        let panelWidth: CGFloat = 360
+        let panelHeight: CGFloat = 440
+        let x = min(screenRect.minX, NSScreen.main?.visibleFrame.maxX ?? screenRect.minX - panelWidth) - panelWidth + screenRect.width
+        let y = screenRect.minY - panelHeight - 4
+        panel.setFrame(NSRect(x: x, y: y, width: panelWidth, height: panelHeight), display: false)
+        // Activate first so the window becomes key while the app is already active.
+        NSApp.activate(ignoringOtherApps: true)
+        panel.makeKeyAndOrderFront(nil)
+
+        clickOutsideMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
+            guard let self, let panel = self.historyPanel else { return }
+            if !panel.frame.contains(NSEvent.mouseLocation) {
+                self.closeHistoryPanel()
+            }
+        }
+
+        // Local key monitor: intercepts ↑/↓ regardless of SwiftUI focus state.
+        keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            guard let self, self.historyPanel?.isVisible == true else { return event }
+            switch event.keyCode {
+            case 125: // down arrow
+                NotificationCenter.default.post(name: .historyMoveDown, object: nil)
+                return nil
+            case 126: // up arrow
+                NotificationCenter.default.post(name: .historyMoveUp, object: nil)
+                return nil
+            case 53: // Escape
+                self.closeHistoryPanel()
+                return nil
+            default:
+                return event
+            }
+        }
+    }
+
+    private func closeHistoryPanel() {
+        historyPanel?.orderOut(nil)
+        if let monitor = clickOutsideMonitor {
+            NSEvent.removeMonitor(monitor)
+            clickOutsideMonitor = nil
+        }
+        if let monitor = keyMonitor {
+            NSEvent.removeMonitor(monitor)
+            keyMonitor = nil
         }
     }
 
     private func handleEntrySelection(_ entry: ClipboardEntry) {
-        popover.performClose(nil)
-        guard AXIsProcessTrusted() else {
-            openSettings()
-            return
-        }
+        closeHistoryPanel()
         paster.paste(entry)
     }
 
     private func openSettings() {
-        DispatchQueue.main.async {
+        if let wc = settingsWindowController, let window = wc.window, window.isVisible {
+            window.makeKeyAndOrderFront(nil)
             NSApp.activate(ignoringOtherApps: true)
-            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            return
         }
+        let view = SettingsView()
+            .environment(preferences)
+            .environment(historyStore)
+        let window = NSWindow(contentViewController: NSHostingController(rootView: view))
+        window.title = "Toms Clippy Light"
+        window.styleMask = [.titled, .closable, .miniaturizable]
+        window.setContentSize(NSSize(width: 480, height: 360))
+        window.center()
+        let wc = NSWindowController(window: window)
+        settingsWindowController = wc
+        wc.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func registerGlobalHotkey() {
         KeyboardShortcuts.onKeyUp(for: .showHistory) { [weak self] in
             guard let self else { return }
-            guard let button = self.statusItem.button else { return }
-            self.paster.captureFocus()
-            self.togglePopover(button)
+            self.toggleHistoryPanel()
         }
     }
 }
 
 private extension Int {
     func nonZeroOr(_ fallback: Int) -> Int { self == 0 ? fallback : self }
+}
+
+extension Notification.Name {
+    static let historyMoveUp   = Notification.Name("historyMoveUp")
+    static let historyMoveDown = Notification.Name("historyMoveDown")
 }

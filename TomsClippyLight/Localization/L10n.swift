@@ -27,6 +27,8 @@ enum L10n {
     static var settingsAccessibilityTitle: String { NSLocalizedString("settings.accessibility.title", value: "Accessibility permission", comment: "Settings label") }
     static var settingsAccessibilityOk: String { NSLocalizedString("settings.accessibility.ok", value: "Granted — auto-paste is ready.", comment: "Settings label") }
     static var settingsAccessibilityMissing: String { NSLocalizedString("settings.accessibility.missing", value: "Not granted — auto-paste is disabled until permission is given in System Settings → Privacy & Security → Accessibility.", comment: "Settings label") }
+    static var settingsAccessibilityRequest: String { NSLocalizedString("settings.accessibility.request", value: "Request Permission…", comment: "Settings button") }
+    static var settingsAccessibilityRebuildHint: String { NSLocalizedString("settings.accessibility.rebuildHint", value: "Note: each Xcode rebuild creates a new binary — you may need to re-grant after every build.", comment: "Settings hint for developers") }
     static var settingsAccessibilityOpen: String { NSLocalizedString("settings.accessibility.open", value: "Open System Settings", comment: "Settings button") }
     static var settingsLanguageRestartHint: String { NSLocalizedString("settings.language.restartHint", value: "Language change takes effect after the next app restart.", comment: "Settings hint") }
 
@@ -41,4 +43,5 @@ enum L10n {
     static var popoverActionPin: String { NSLocalizedString("popover.action.pin", value: "Pin", comment: "Popover action") }
     static var popoverActionUnpin: String { NSLocalizedString("popover.action.unpin", value: "Unpin", comment: "Popover action") }
     static var popoverActionDelete: String { NSLocalizedString("popover.action.delete", value: "Delete", comment: "Popover action") }
+    static var popoverAccessibilityHint: String { NSLocalizedString("popover.accessibility.hint", value: "Auto-paste disabled — grant Accessibility in Settings → Shortcut.", comment: "Popover accessibility warning") }
 }

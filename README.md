@@ -31,7 +31,7 @@ Since this app is **unsigned** (no Apple Developer ID), macOS will quarantine it
 3. Open Terminal and run:
 
    ```bash
-   xattr -dr com.apple.quarantine /Applications/TomsClippyLight.app
+   xattr -d com.apple.quarantine /Applications/TomsClippyLight.app
    ```
 
    Alternatively, use the bundled helper:

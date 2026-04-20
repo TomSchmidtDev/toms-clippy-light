@@ -12,5 +12,5 @@ if [[ ! -d "$APP_PATH" ]]; then
 fi
 
 echo "Removing quarantine attribute from $APP_PATH ..."
-xattr -dr com.apple.quarantine "$APP_PATH"
+xattr -d com.apple.quarantine "$APP_PATH"
 echo "Done. You can now open the app."

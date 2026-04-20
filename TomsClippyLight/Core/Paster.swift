@@ -40,10 +40,14 @@ public final class Paster {
             return
         }
 
-        Task { @MainActor [keyboard] in
-            try? await Task.sleep(nanoseconds: 80_000_000)
+        Task { @MainActor [keyboard, workspace] in
+            await waitForFocus(focus: focus, workspace: workspace)
             keyboard.postCommandV()
         }
+    }
+
+    public func postCommandV() {
+        keyboard.postCommandV()
     }
 
     public func writeToPasteboard(_ entry: ClipboardEntry) {
@@ -64,6 +68,16 @@ public final class Paster {
             }
         }
         pasteboard.clearAndWrite([item])
+    }
+
+    private func waitForFocus(focus: CapturedFocus, workspace: WorkspaceProtocol) async {
+        let deadline = 20  // up to 400ms in 20ms steps
+        for _ in 0..<deadline {
+            let pid = workspace.frontmostAppProcessID
+            if let expected = focus.processID, pid == expected { return }
+            if let expected = focus.bundleID, workspace.frontmostAppBundleID == expected { return }
+            try? await Task.sleep(nanoseconds: 20_000_000)
+        }
     }
 
     private func reactivate(focus: CapturedFocus) -> Bool {
