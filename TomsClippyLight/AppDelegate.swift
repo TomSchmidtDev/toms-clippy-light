@@ -160,6 +160,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             case 126: // up arrow
                 NotificationCenter.default.post(name: .historyMoveUp, object: nil)
                 return nil
+            case 36, 76: // Return / Enter (numpad)
+                NotificationCenter.default.post(name: .historySelectCurrent, object: nil)
+                return nil
             case 53: // Escape
                 self.closeHistoryPanel()
                 return nil
@@ -219,6 +222,7 @@ private extension Int {
 }
 
 extension Notification.Name {
-    static let historyMoveUp   = Notification.Name("historyMoveUp")
-    static let historyMoveDown = Notification.Name("historyMoveDown")
+    static let historyMoveUp        = Notification.Name("historyMoveUp")
+    static let historyMoveDown      = Notification.Name("historyMoveDown")
+    static let historySelectCurrent = Notification.Name("historySelectCurrent")
 }

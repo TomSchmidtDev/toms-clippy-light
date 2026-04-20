@@ -45,8 +45,8 @@ targets:
       path: TomsClippyLight/Info.plist
       properties:
         CFBundleDisplayName: Toms Clippy Light
-        CFBundleShortVersionString: "0.1.0"
-        CFBundleVersion: "11"
+        CFBundleShortVersionString: "0.1.2"
+        CFBundleVersion: "14"
         LSUIElement: true
         LSMinimumSystemVersion: "26.0"
         NSHumanReadableCopyright: "Copyright © 2026 Tom Schmidt. Licensed under MIT."

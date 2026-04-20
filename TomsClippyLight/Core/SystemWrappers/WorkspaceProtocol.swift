@@ -23,11 +23,12 @@ public final class SystemWorkspace: WorkspaceProtocol, @unchecked Sendable {
         guard let app = NSWorkspace.shared.runningApplications.first(where: { $0.bundleIdentifier == bundleID }) else {
             return false
         }
-        return app.activate(from: NSRunningApplication.current)
+        // activate() does not require the calling app to be frontmost, unlike activate(from:).
+        return app.activate()
     }
 
     public func activateApp(withProcessID pid: pid_t) -> Bool {
         guard let app = NSRunningApplication(processIdentifier: pid) else { return false }
-        return app.activate(from: NSRunningApplication.current)
+        return app.activate()
     }
 }

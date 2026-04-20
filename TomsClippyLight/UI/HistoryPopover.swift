@@ -38,6 +38,9 @@ struct HistoryPopover: View {
         .onReceive(NotificationCenter.default.publisher(for: .historyMoveDown)) { _ in
             moveSelection(by: 1)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .historySelectCurrent)) { _ in
+            selectCurrent()
+        }
     }
 
     private func panelDidAppear() {
