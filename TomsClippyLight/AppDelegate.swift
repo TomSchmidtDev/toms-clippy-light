@@ -77,7 +77,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupHistoryPanel() {
-        let panel = NSPanel(
+        let panel = KeyablePanel(
             contentRect: NSRect(x: 0, y: 0, width: 360, height: 440),
             styleMask: [.borderless, .fullSizeContentView],
             backing: .buffered,
@@ -142,6 +142,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Activate first so the window becomes key while the app is already active.
         NSApp.activate(ignoringOtherApps: true)
         panel.makeKeyAndOrderFront(nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak panel, weak self] in
+            guard let panel, let self else { return }
+            if let tf = self.firstTextField(in: panel.contentView) {
+                panel.makeFirstResponder(tf)
+            }
+        }
 
         clickOutsideMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
             guard let self, let panel = self.historyPanel else { return }
@@ -215,6 +221,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self.toggleHistoryPanel()
         }
     }
+
+    private func firstTextField(in view: NSView?) -> NSTextField? {
+        guard let view else { return nil }
+        if let tf = view as? NSTextField, !tf.isHidden, tf.isEditable { return tf }
+        for sub in view.subviews {
+            if let found = firstTextField(in: sub) { return found }
+        }
+        return nil
+    }
+}
+
+private final class KeyablePanel: NSPanel {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { false }
 }
 
 private extension Int {

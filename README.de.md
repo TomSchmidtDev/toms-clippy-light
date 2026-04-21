@@ -78,8 +78,11 @@ make build        # oder: xcodegen generate && open TomsClippyLight.xcodeproj
 | `make generate` | `.xcodeproj` aus `project.yml` (re-)generieren |
 | `make build` | Debug-Build |
 | `make test` | Unit- + UI-Tests laufen lassen |
-| `make archive` | Unsigniertes Release-Archiv |
+| `make archive` | Release-Archiv (signiert mit Apple Development-Zertifikat falls vorhanden, sonst ad-hoc) |
+| `make install` | `archive` + App nach `/Applications` kopieren |
 | `make zip` | Distributierbares `.zip` unter `build/` |
+| `make release-local` | Wie `zip`, gibt Pfad des Artefakts aus |
+| `make clean` | `build/`, `DerivedData/` und generiertes `.xcodeproj` löschen |
 
 ## Testing
 
