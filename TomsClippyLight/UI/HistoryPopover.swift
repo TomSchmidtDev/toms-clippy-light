@@ -12,7 +12,6 @@ struct HistoryPopover: View {
     @State private var selectedID: ClipboardEntry.ID? = nil
     @State private var isAccessibilityTrusted: Bool = AXIsProcessTrusted()
     @State private var pollTimer: Timer?
-    @FocusState private var searchFocused: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -28,9 +27,6 @@ struct HistoryPopover: View {
         .onDisappear {
             pollTimer?.invalidate()
             pollTimer = nil
-        }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
-            Task { @MainActor in searchFocused = true }
         }
         .onReceive(NotificationCenter.default.publisher(for: .historyMoveUp)) { _ in
             moveSelection(by: -1)
@@ -61,7 +57,6 @@ struct HistoryPopover: View {
                 .foregroundStyle(.secondary)
             TextField(L10n.popoverSearchPlaceholder, text: $searchText)
                 .textFieldStyle(.plain)
-                .focused($searchFocused)
                 .onSubmit(selectCurrent)
             if !searchText.isEmpty {
                 Button(action: { searchText = ""; selectedID = nil }) {

@@ -1,3 +1,4 @@
+import ApplicationServices
 import AppKit
 import Foundation
 
@@ -40,8 +41,19 @@ public final class Paster {
             return
         }
 
+        let requiresTextInput = entry.isTextContent
+
         Task { @MainActor [keyboard, workspace] in
             await waitForFocus(focus: focus, workspace: workspace)
+            // For text entries, guard against dispatching ⌘V into a context that
+            // has no focused text field — e.g. Finder's file browser after an
+            // inline rename was cancelled when our panel stole focus.  In that
+            // case ⌘V would trigger Finder's "paste items" action (which silently
+            // fails with text on the pasteboard).  The selected text stays on the
+            // pasteboard so the user can paste manually once a text field is active.
+            if requiresTextInput && !hasFocusedTextInput() {
+                return
+            }
             keyboard.postCommandV()
         }
     }
@@ -88,5 +100,38 @@ public final class Paster {
             return true
         }
         return false
+    }
+
+    /// Returns true when the system-wide focused UI element is a text input.
+    /// Uses the Accessibility API (requires AXIsProcessTrusted() == true).
+    /// Called after `waitForFocus` so the target app is already frontmost.
+    private func hasFocusedTextInput() -> Bool {
+        let systemElement = AXUIElementCreateSystemWide()
+        var focusedRef: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(
+            systemElement,
+            kAXFocusedUIElementAttribute as CFString,
+            &focusedRef
+        ) == .success, let focused = focusedRef else { return false }
+
+        // AXUIElement is a CF-backed opaque type; unsafeBitCast from CFTypeRef is safe
+        // because AXUIElementCopyAttributeValue guarantees the returned object is an
+        // AXUIElement when querying kAXFocusedUIElementAttribute.
+        let element = unsafeBitCast(focused, to: AXUIElement.self)
+
+        var roleRef: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(
+            element,
+            kAXRoleAttribute as CFString,
+            &roleRef
+        ) == .success, let role = roleRef as? String else { return false }
+
+        let textInputRoles: Set<String> = [
+            kAXTextFieldRole as String,   // "AXTextField"
+            kAXTextAreaRole as String,    // "AXTextArea"
+            "AXComboBox",
+            "AXSearchField",
+        ]
+        return textInputRoles.contains(role)
     }
 }

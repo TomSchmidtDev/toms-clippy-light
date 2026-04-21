@@ -57,6 +57,15 @@ public struct ClipboardEntry: Identifiable, Hashable, Codable, Sendable {
         case .files: return "files"
         }
     }
+
+    /// True for text and rich-text entries, false for images and file references.
+    /// Used to decide whether ⌘V makes sense in the target app.
+    public var isTextContent: Bool {
+        switch content {
+        case .text, .richText: return true
+        case .image, .files: return false
+        }
+    }
 }
 
 import CryptoKit
